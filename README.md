@@ -25,12 +25,7 @@ Restart your terminal to apply the changes.
 
 ## Installation
 
-1. Clone the repository:
-
-   ```
-   git clone https://github.com/yourusername/your-repo-name.git
-   cd your-repo-name
-   ```
+1. Clone the repository
 
 2. Set up the Python environment:
 
