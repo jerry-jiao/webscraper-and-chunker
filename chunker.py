@@ -1,17 +1,21 @@
 from typing import List
 from openai import OpenAI
 import numpy as np
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 client = OpenAI(
-  api_key='your-api-key-here'
+  api_key=openai_api_key
 )
 
 THRESHOLD = 750
 
 def break_up_content(content: str):
-  # try breaking up by newline
   by_newline = list(filter(lambda s: len(s), map(str.strip, content.split('\n'))))
-  
   return by_newline
 
 def chunk(content: str):
@@ -29,7 +33,6 @@ def get_embeddings(content: List[str]):
     model='text-embedding-3-small'
   ).data))
 
-
 def get_neighboring_similarities(embeddings):
   return [cosine_similarity(embeddings[i], embeddings[i+1]) for i in range(0, len(embeddings) - 1)]
 
@@ -37,6 +40,7 @@ def cosine_similarity(embedding1, embedding2):
   dot_product = np.dot(embedding1, embedding2)
   norm1 = np.linalg.norm(embedding1)
   norm2 = np.linalg.norm(embedding2)
+
   return dot_product / (norm1 * norm2)
 
 def merge_chunks_by_similarity(chunks, similarities):
